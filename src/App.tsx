@@ -5,6 +5,7 @@ import { Main } from './pages/Main'
 import { SignIn } from './pages/SignIn'
 import { SignUp } from './pages/SignUp'
 import { useStore } from './pages/components/store'
+import { FavoritesPage } from './pages/FavoritesPage'
 
 function App() {
   const { updateUser } = useStore()
@@ -36,6 +37,7 @@ function App() {
         <Route index element={<Navigate replace to="/sign-in" />} />
         <Route path='/sign-in' element={< SignIn />} />
         <Route path='/sign-up' element={< SignUp />} />
+        <Route path='/pick-favorites' element={< FavoritesPage />} />
         <Route path='/main' element={< Main />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>

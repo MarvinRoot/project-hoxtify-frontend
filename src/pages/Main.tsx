@@ -1,5 +1,16 @@
+import { Header } from "./components/Header";
+import { Sidebar } from "./components/Sidebar";
+import { MainPage } from "./components/MainPage";
+
 export function Main() {
     return (
-        <h1>Main Page</h1>
+        <section className="hoxtify-app">
+            <Header/>
+            <section className="main-wrapper">
+                <Sidebar />
+                <MainPage />
+            </section>
+            
+        </section>
     )
 }
