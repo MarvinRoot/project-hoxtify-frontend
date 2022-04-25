@@ -1,12 +1,16 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useStore } from "./components/store"
 
 export function SignUp() {
     const navigate = useNavigate()
     const { updateUser } = useStore()
+    const [password, setPassword] = useState('')
+    const [passwordMessage, setPasswordMessage] = useState('')
 
     function addUser(username: string, email: string, password: string) {
-        fetch('http://localhost:3001/sign-up', {
+        if(passwordMessage===''){
+            fetch('http://localhost:3001/sign-up', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -22,7 +26,45 @@ export function SignUp() {
                     navigate('/pick-favorites')
                 }
             })
+        }else alert('Please set you password right!')
+        
     }
+
+    function handleOnChange(e:any) {
+        setPassword(e.target.value)
+    }
+
+    function handleValidation() {
+
+        const uppercaseRegExp = /(?=.*?[A-Z])/;
+        const lowercaseRegExp = /(?=.*?[a-z])/;
+        const digitsRegExp = /(?=.*?[0-9])/;
+        const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+        const minLengthRegExp = /.{8,}/;
+        const uppercasePassword = uppercaseRegExp.test(password);
+        const lowercasePassword = lowercaseRegExp.test(password);
+        const digitsPassword = digitsRegExp.test(password);
+        const specialCharPassword = specialCharRegExp.test(password);
+        const minLengthPassword = minLengthRegExp.test(password);
+
+        let errMsg = '';
+        if (!uppercasePassword) {
+            errMsg = 'At least one Uppercase';
+        } else if (!lowercasePassword) {
+            errMsg = 'At least one Lowercase';
+        } else if (!digitsPassword) {
+            errMsg = 'At least one digit';
+        } else if (!specialCharPassword) {
+            errMsg = 'At least one Special Characters';
+        } else if (!minLengthPassword) {
+            errMsg = 'At least minumum 8 characters';
+        } else {
+            errMsg = '';
+        }
+        setPasswordMessage(errMsg)
+    }
+
+
     return (
         <div className="sign-up">
             <h1 className="logo">Hoxtify</h1>
@@ -47,7 +89,8 @@ export function SignUp() {
 
                     <label>
                         <span>Password</span>
-                        <input required name="password" type="password" placeholder="Create a password" />
+                        <input onChange={(e) => handleOnChange(e)} onKeyUp={()=>handleValidation()} required name="password" type="password" placeholder="Create a password" />
+                        <p style={{color:"red", textAlign:"start"}}>{passwordMessage}</p>
                     </label>
 
                     <button type="submit" value="Submit">
